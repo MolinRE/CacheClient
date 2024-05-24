@@ -21,23 +21,13 @@ public class HttpCacheClient
         _client = httpClient;
     }
 
-    public async Task<IHttpResponseMessage> GetAsync(string requestUri, string name)
+    public async Task<IHttpResponseMessage> GetAsync(string requestUri, PageFormat format = PageFormat.HTML)
     {
         var url = new Uri(requestUri);
-        var segments = url.AbsolutePath.Split("/", StringSplitOptions.RemoveEmptyEntries);
-        if (segments.All(p => p == string.Empty))
-        {
-            var sb = new StringBuilder();
-            foreach (var ch in name)
-            {
-                sb.Append(Path.GetInvalidFileNameChars().Contains(ch) ? '_' : ch);
-            }
-            
-            segments = new[] { sb.ToString() };
-        }
+
+        string pageName = requestUri.GetMd5Hash() + "." + format.ToString().ToLower();
         
-        var fileName = Path.Combine(_dumpDirectory, Path.Combine(segments)) + ".html";
-        var dir = Path.GetDirectoryName(fileName)!;
+        var fileName = Path.Combine(_dumpDirectory, pageName);
 
         if (!File.Exists(fileName))
         {
@@ -52,9 +42,9 @@ public class HttpCacheClient
             await using var stream = await response.Content.ReadAsStreamAsync();
             using var sr = new StreamReader(stream, Encoding.UTF8);
             var result = await sr.ReadToEndAsync();
-            if (!Directory.Exists(dir))
+            if (!Directory.Exists(_dumpDirectory))
             {
-                Directory.CreateDirectory(dir);
+                Directory.CreateDirectory(_dumpDirectory);
             }
             await File.WriteAllTextAsync(fileName, result, Encoding.UTF8);
         }
