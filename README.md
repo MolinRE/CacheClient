@@ -3,10 +3,10 @@
 ### Usage
 
 ```csharp
-var client = new HttpCacheClient("C:\temp\site.com_cache");
+var client = new HttpCacheClient(@"C:\temp\site.com_cache", cacheLifeMinutes: 24 * 60);
 
 // First call sends actual request and stores response on disc
-var pageContent = client.GetHtml("site.com/page.html");
+var response = client.GetAsync("site.com/page.html");
 // Second call first checks if page available on disc
-var pageContentFromCache = client.GetHtml("site.com/page.html");
+var responseFromCache = client.GetAsync("site.com/page.html");
 ```
