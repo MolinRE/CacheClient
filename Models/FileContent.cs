@@ -6,14 +6,16 @@ namespace CacheClient.Models;
 public class FileContent : IHttpContent
 {
     private readonly string _fileName;
+    private readonly Encoding _encoding;
 
-    public FileContent(string fileName)
+    public FileContent(string fileName, Encoding encoding)
     {
         _fileName = fileName;
+        _encoding = encoding;
     }
     
     public async Task<string> ReadAsStringAsync()
     {
-        return await File.ReadAllTextAsync(_fileName, Encoding.UTF8);
+        return await File.ReadAllTextAsync(_fileName, _encoding);
     }
 }

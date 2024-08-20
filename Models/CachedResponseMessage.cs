@@ -1,5 +1,6 @@
 ﻿using CacheClient.Interfaces;
 using System.Net;
+using System.Text;
 
 namespace CacheClient.Models;
 
@@ -13,8 +14,8 @@ public class CachedResponseMessage : IHttpResponseMessage
 
     public IHttpContent Content { get; set; }
 
-    public CachedResponseMessage(string fileName)
+    public CachedResponseMessage(string fileName, Encoding encoding)
     {
-        Content = new FileContent(fileName);
+        Content = new FileContent(fileName, encoding);
     }
 }
