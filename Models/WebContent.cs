@@ -3,7 +3,7 @@ using System.Text;
 
 namespace CacheClient.Models;
 
-public class WebContent : IHttpContent
+public class WebContent : IContent
 {
     private readonly HttpContent _content;
     private readonly Encoding _encoding;

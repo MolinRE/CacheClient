@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CacheClient.Models;
 
-public class RealHttpResponse : IHttpResponseMessage
+public class RealHttpResponse : BaseResponse
 {
     public bool IsSuccessStatusCode { get; }
 
@@ -12,21 +12,22 @@ public class RealHttpResponse : IHttpResponseMessage
 
     public string? ReasonPhrase { get; }
 
-    public IHttpContent Content { get; set; }
-
-    private RealHttpResponse(HttpResponseMessage response)
+    private RealHttpResponse(HttpResponseMessage response, string fileName)
+        : base(fileName)
     {
         IsSuccessStatusCode = response.IsSuccessStatusCode;
         StatusCode = response.StatusCode;
         ReasonPhrase = response.ReasonPhrase;
     }
 
-    public RealHttpResponse(HttpResponseMessage response, Encoding encoding) : this(response)
+    public RealHttpResponse(HttpResponseMessage response, Encoding encoding, string fileName)
+        : this(response, fileName)
     {
         Content = new WebContent(response.Content, encoding);
     }
-    
-    public RealHttpResponse(HttpResponseMessage response, string content) : this(response)
+
+    public RealHttpResponse(HttpResponseMessage response, string content, string fileName)
+        : this(response, fileName)
     {
         Content = new StringContent(content);
     }

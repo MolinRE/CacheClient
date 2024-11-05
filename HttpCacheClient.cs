@@ -19,7 +19,7 @@ public class HttpCacheClient
         _dumpDirectory = dumpDirectory;
         _client = httpClient ?? new();
         _encoding = overrideEncoding ?? Encoding.UTF8;
-        
+
         if (cacheLifeMinutes > 0 && Directory.Exists(_dumpDirectory))
         {
             var di = new DirectoryInfo(_dumpDirectory);
@@ -45,7 +45,7 @@ public class HttpCacheClient
         }
     }
 
-    public async Task<IHttpResponseMessage> GetAsync(string requestUri, PageFormat format = PageFormat.HTML)
+    public async Task<BaseResponse> GetAsync(string requestUri, PageFormat format = PageFormat.HTML)
     {
         var url = new Uri(requestUri);
         var pageName = requestUri.GetMd5Hash() + "." + format.ToString().ToLower();
@@ -62,7 +62,7 @@ public class HttpCacheClient
         var response = await _client.GetAsync(url);
         if (!response.IsSuccessStatusCode)
         {
-            return new RealHttpResponse(response, _encoding);
+            return new RealHttpResponse(response, _encoding, fileName);
         }
 
         await using var stream = await response.Content.ReadAsStreamAsync();
@@ -74,6 +74,6 @@ public class HttpCacheClient
         }
 
         await File.WriteAllTextAsync(fileName, result, _encoding);
-        return new RealHttpResponse(response, result);
+        return new RealHttpResponse(response, result, fileName);
     }
 }

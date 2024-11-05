@@ -2,7 +2,7 @@ using CacheClient.Interfaces;
 
 namespace CacheClient.Models;
 
-public class StringContent(string content) : IHttpContent
+public class StringContent(string content) : IContent
 {
     public Task<string> ReadAsStringAsync()
     {

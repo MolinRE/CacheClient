@@ -1,14 +1,16 @@
-﻿using System.Net;
+﻿namespace CacheClient.Interfaces;
 
-namespace CacheClient.Interfaces;
-
-public interface IHttpResponseMessage
+public abstract class BaseResponse
 {
-    public bool IsSuccessStatusCode { get; }
+    /// <summary>
+    /// Name of the file than contains cached page
+    /// </summary>
+    public string FileName { get; }
 
-    public HttpStatusCode StatusCode { get; }
+    public IContent Content { get; protected set; }
 
-    public string? ReasonPhrase { get; }
-    
-    public IHttpContent Content { get; set; }
+    protected BaseResponse(string fileName)
+    {
+        FileName = Path.GetFileName(fileName);
+    }
 }

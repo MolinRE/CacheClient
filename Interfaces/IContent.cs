@@ -1,6 +1,6 @@
 ﻿namespace CacheClient.Interfaces;
 
-public interface IHttpContent
+public interface IContent
 {
     Task<string> ReadAsStringAsync();
 }
