@@ -1,4 +1,6 @@
-﻿namespace CacheClient.Interfaces;
+﻿using System.Threading.Tasks;
+
+namespace CacheClient.Interfaces;
 
 public interface IContent
 {

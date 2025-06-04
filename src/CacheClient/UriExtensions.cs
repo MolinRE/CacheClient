@@ -1,4 +1,6 @@
-﻿namespace CacheClient;
+﻿using System;
+
+namespace CacheClient;
 
 public static class UriExtensions
 {

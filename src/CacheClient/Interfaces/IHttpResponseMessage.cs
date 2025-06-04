@@ -1,4 +1,6 @@
-﻿namespace CacheClient.Interfaces;
+﻿using System.IO;
+
+namespace CacheClient.Interfaces;
 
 public abstract class BaseResponse
 {
@@ -7,7 +9,7 @@ public abstract class BaseResponse
     /// </summary>
     public string FileName { get; }
 
-    public IContent Content { get; protected set; }
+    public IContent Content { get; protected set; } = null!;
 
     protected BaseResponse(string fileName)
     {
